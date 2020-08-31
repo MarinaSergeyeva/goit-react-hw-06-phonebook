@@ -1,16 +1,23 @@
 import { combineReducers } from "redux";
+import actionTypes from "./contactsActionTypes";
 
-// {
-//   contacts: {
-//     items: [],
-//     filter: ''
-//   }
-// }
+const items = (state = [], action) => {
+  switch (action.type) {
+    case actionTypes.ADD:
+      console.log("state", state);
+      return [...state, action.payload];
 
-const items = (state = [], action) => state;
+    case actionTypes.DELETE:
+      return state.filter(contact => contact.id !== action.payload.id);
+
+    default:
+      return state;
+  }
+};
+
 const filter = (state = "", action) => state;
 
 export default combineReducers({
   items,
-  filter,
+  filter
 });

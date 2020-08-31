@@ -1,35 +1,27 @@
 import { v4 as uuidv4 } from "uuid";
-import actionTypes from './contactsActionTypes'
+import actionTypes from "./contactsActionTypes";
 
 const addContact = ({ name, number }) => ({
-    type: addContact.ADD,
-    payload: {
-        contact: 
-        {
-            id: uuidv4()
-            name,
-            number,
-        }
-    }
-        
+  type: actionTypes.ADD,
+  payload: {
+    id: uuidv4(),
+    name,
+    number
+  }
 });
 
 const deleteContact = id => ({
-    type: addContact.DELETE,
-    payload: {
-        id,
-    }
-})
+  type: actionTypes.DELETE,
+  payload: { id }
+});
 
 const changeFilter = filter => ({
-    type: addContact.FILTER,
-    payload: {
-        filter,
-    }
-})
+  type: actionTypes.FILTER,
+  payload: { filter }
+});
 
 export default {
-    addContact,
-    deleteContact,
-    changeFilter,
-}
+  addContact,
+  deleteContact,
+  changeFilter
+};

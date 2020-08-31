@@ -1,6 +1,8 @@
 import React from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./Filter.module.css";
+import { connect } from "react-redux";
+import actions from "../../redux/contacts/contactsActions";
 
 const Filter = ({ filter, getFilter }) => {
   return (
@@ -14,16 +16,18 @@ const Filter = ({ filter, getFilter }) => {
       >
         <label className={styles.filter}>
           Find contacts by name
-          <input
-            type="text"
-            name="filter"
-            value={filter}
-            onChange={getFilter}
-          />
+          <input type="text" name="filter" value={filter} onChange={getFilter} />
         </label>
       </CSSTransition>
     </div>
   );
 };
 
-export default Filter;
+const mapDispatchToProps = dispatch => ({
+  onFilter: filter => dispatch(actions.changeFilter(filter))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Filter);

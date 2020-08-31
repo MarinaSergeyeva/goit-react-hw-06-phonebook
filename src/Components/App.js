@@ -6,8 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 import { CSSTransition } from "react-transition-group";
 import styles from "./App.module.css";
 import Alert from "./Alert/Alert";
+import { connect } from "react-redux";
+import actionTypes from "../redux/contacts/contactsActionTypes";
+import actions from "../redux/contacts/contactsActions";
 
-export default class App extends Component {
+class App extends Component {
   state = {
     contacts: [
       // {
@@ -32,22 +35,22 @@ export default class App extends Component {
       // },
     ],
     filter: "",
-    alert: false,
+    alert: false
   };
 
   componentDidMount() {
-    console.log("Task componentDidMount");
+    // console.log("Task componentDidMount");
     const persistedContacts = localStorage.getItem("contacts");
 
     if (persistedContacts) {
       this.setState({
-        contacts: JSON.parse(persistedContacts),
+        contacts: JSON.parse(persistedContacts)
       });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Task componentDidUpdate");
+    // console.log("Task componentDidUpdate");
 
     if (prevProps !== prevState) {
       localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
@@ -57,78 +60,77 @@ export default class App extends Component {
   addItem = ({ name, number }) => {
     const { contacts } = this.state;
 
-    if (
-      contacts.find(
-        (contact) => contact.name.toLowerCase() === name.toLowerCase()
-      )
-    ) {
+    if (contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())) {
       this.setState({ alert: true });
       setTimeout(() => this.setState({ alert: false }), 1500);
       // alert("The name is already exsist");
-    } else {
-      this.setState((prevState) => ({
-        contacts: [
-          ...prevState.contacts,
-          {
-            id: uuidv4(),
-            name,
-            number,
-          },
-        ],
-      }));
     }
+    // else {
+    //   this.setState(prevState => ({
+    //     contacts: [
+    //       ...prevState.contacts,
+    //       {
+    //         id: uuidv4(),
+    //         name,
+    //         number
+    //       }
+    //     ]
+    //   }));
+    // }
   };
 
-  getFilter = (e) => {
-    console.log(e.target);
+  getFilter = e => {
+    // console.log(e.target);
     const { value } = e.target;
 
     this.setState({
-      filter: value,
+      filter: value
     });
   };
 
   findContact = () => {
-    const { contacts, filter } = this.state;
-    console.log(contacts);
-    return filter
-      ? contacts.filter((contact) =>
-          contact.name.toLowerCase().includes(filter.toLowerCase())
-        )
-      : contacts;
+    // const { contacts, filter } = this.state;
+    // console.log(contacts);
+    // return filter ? contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase())) : contacts;
   };
 
-  deleteContact = (id) => {
-    this.setState((prevState) => {
-      return {
-        contacts: prevState.contacts.filter((contact) => contact.id !== id),
-      };
-    });
-  };
+  // deleteContact = id => {
+  //   this.setState(prevState => {
+  //     return {
+  //       contacts: prevState.contacts.filter(contact => contact.id !== id)
+  //     };
+  //   });
+  // };
 
   render() {
-    // const { contacts, filter, alert } = this.state;
+    // const { filter, alert } = this.state;
+    console.log("APP", this.props);
+    const { items } = this.props;
     return (
       <>
         <Alert alert={alert} />
-        {/* <CSSTransition
-          in={true}
-          timeout={500}
-          classNames={styles}
-          appear={true}
-          unmountOnExit
-        >
+        <CSSTransition in={true} timeout={500} classNames={styles} appear={true} unmountOnExit>
           <p className={styles.sectionTitle}> Phonebook </p>
         </CSSTransition>
         <ContactForm addItem={this.addItem} />
-        {contacts.length > 1 && (
-          <Filter filter={filter} getFilter={this.getFilter} />
-        )}
-        <ContactsList
-          contacts={this.findContact()}
-          deleteContact={this.deleteContact}
-        /> */}
+        {items.length > 1 && <Filter filter={this.props.onChangeFilter} getFilter={this.getFilter} />}
+        <ContactsList contacts={this.findContact()} deleteContact={this.deleteContact} />
       </>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    items: state.contacts.items
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  onChangeFilter: filter => dispatch(actions.changeFilter(filter))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
