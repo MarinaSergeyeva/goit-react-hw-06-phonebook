@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import ContactForm from "./contactForm/ContactForm";
 import ContactsList from "./contactsList/ContactsList";
 import Filter from "./filter/Filter";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import { CSSTransition } from "react-transition-group";
 import styles from "./App.module.css";
 import Alert from "./Alert/Alert";
 import { connect } from "react-redux";
-import actionTypes from "../redux/contacts/contactsActionTypes";
+// import actionTypes from "../redux/contacts/contactsActionTypes";
 import actions from "../redux/contacts/contactsActions";
 
 class App extends Component {
@@ -83,6 +83,7 @@ class App extends Component {
     // console.log(e.target);
     const { value } = e.target;
 
+    // this.props.onChangeFilter(value);
     this.setState({
       filter: value
     });
@@ -104,17 +105,18 @@ class App extends Component {
 
   render() {
     // const { filter, alert } = this.state;
-    console.log("APP", this.props);
+    // console.log("APP", this.props);
     const { items } = this.props;
+    console.log(this.props);
     return (
       <>
-        <Alert alert={alert} />
+        {/* <Alert alert={alert} /> */}
         <CSSTransition in={true} timeout={500} classNames={styles} appear={true} unmountOnExit>
           <p className={styles.sectionTitle}> Phonebook </p>
         </CSSTransition>
         <ContactForm addItem={this.addItem} />
-        {items.length > 1 && <Filter filter={this.props.onChangeFilter} getFilter={this.getFilter} />}
-        <ContactsList contacts={this.findContact()} deleteContact={this.deleteContact} />
+        {items.length > 1 && <Filter filter={this.props.filter} getFilter={this.getFilter} />}
+        <ContactsList contacts={this.findContact()} />
       </>
     );
   }
@@ -122,7 +124,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    items: state.contacts.items
+    items: state.contacts.items,
+    filter: state.contacts.filter
   };
 };
 

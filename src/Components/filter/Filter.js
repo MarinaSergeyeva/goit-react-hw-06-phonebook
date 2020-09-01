@@ -23,11 +23,17 @@ const Filter = ({ filter, getFilter }) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    filter: state.contacts.filter
+  };
+};
+
 const mapDispatchToProps = dispatch => ({
   onFilter: filter => dispatch(actions.changeFilter(filter))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Filter);
