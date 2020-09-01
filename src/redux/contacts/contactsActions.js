@@ -20,8 +20,13 @@ const changeFilter = filter => ({
   payload: { filter }
 });
 
+const showAlert = () => ({
+  type: actionTypes.ALERT
+});
+
 export default {
   addContact,
   deleteContact,
-  changeFilter
+  changeFilter,
+  showAlert
 };

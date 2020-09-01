@@ -12,15 +12,6 @@ class ContactsList extends Component {
           {this.props.contacts.map(contact => (
             <CSSTransition key={contact.id} in={this.props.contacts.length > 0} timeout={250} classNames={styles}>
               <ContactsListItems contact={contact} />
-              {/* <li className={styles.contactsListItem}>
-                {contact.name}: {contact.number}
-                <button
-                  type="button"
-                  onClick={() => this.props.deleteContact(contact.id)}
-                >
-                  Delete
-                </button>
-              </li> */}
             </CSSTransition>
           ))}
         </TransitionGroup>
@@ -31,7 +22,9 @@ class ContactsList extends Component {
 
 const mapStateToProps = state => {
   return {
-    contacts: state.contacts.items
+    contacts: state.contacts.filter
+      ? state.contacts.items.filter(contact => contact.name.toLowerCase().includes(state.contacts.filter.toLowerCase()))
+      : state.contacts.items
   };
 };
 

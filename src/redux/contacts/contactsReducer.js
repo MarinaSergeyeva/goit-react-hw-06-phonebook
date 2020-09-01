@@ -41,7 +41,17 @@ const items = (
 const filter = (state = "", action) => {
   switch (action.type) {
     case actionTypes.FILTER:
-      return state.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+      return action.payload.filter;
+
+    default:
+      return state;
+  }
+};
+
+const alert = (state = false, action) => {
+  switch (action.type) {
+    case actionTypes.ALERT:
+      return !state;
 
     default:
       return state;
@@ -50,5 +60,6 @@ const filter = (state = "", action) => {
 
 export default combineReducers({
   items,
-  filter
+  filter,
+  alert
 });

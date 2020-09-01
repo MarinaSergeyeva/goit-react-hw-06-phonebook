@@ -7,16 +7,17 @@ import actions from "../../redux/contacts/contactsActions";
 const Filter = ({ filter, getFilter }) => {
   return (
     <div className={styles.filterWrapper}>
-      <CSSTransition
-        in={true}
-        timeout={1000}
-        classNames={styles}
-        // appear={true}
-        // unmountOnExit
-      >
+      <CSSTransition in={true} timeout={1000} classNames={styles}>
         <label className={styles.filter}>
           Find contacts by name
-          <input type="text" name="filter" value={filter} onChange={getFilter} />
+          <input
+            type="text"
+            name="filter"
+            value={filter}
+            onChange={e => {
+              getFilter(e.target.value);
+            }}
+          />
         </label>
       </CSSTransition>
     </div>
@@ -30,7 +31,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onFilter: filter => dispatch(actions.changeFilter(filter))
+  getFilter: filter => dispatch(actions.changeFilter(filter))
 });
 
 export default connect(
